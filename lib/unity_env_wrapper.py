@@ -20,17 +20,19 @@ class UnityEnvWrapper(gym.Env):
     def __init__(
         self,
         environment_filename: str,
-            pixels: bool = False
+            pixels: bool = False,
+            base_port = 5005
     ):
         """
         Environment initialization
         :param environment_filename: The UnityEnvironment path or file to be wrapped in the gym.
         """
-        base_port = 5005
+        self.base_port = base_port
         self._pixels = pixels
 
         self._env = UnityEnvironment(
-            file_name=environment_filename
+            file_name=environment_filename,
+            base_port=base_port
         )
 
         print("Environment started...")
@@ -45,24 +47,16 @@ class UnityEnvWrapper(gym.Env):
         print('Number of agents:', len(env_info.agents))
 
         # number of actions
-        self._nA = self.brain.vector_action_space_size
-        self._action_space = spaces.Discrete(self._nA)
-        print('Number of actions:', self._nA)
+        self._action_space = spaces.Box(np.array([-1, -1, -1, -1]), np.array([1, 1, 1, 1]), dtype=np.float32)
 
         # examine the state space
-        if self._pixels:
-            state = env_info.visual_observations[0]
-            print('States look like:')
-            plt.imshow(np.squeeze(state))
-            plt.show()
-            self._observation_size = state.shape
-            self._observation_space = spaces.Box(low=0, high=255, shape=state.shape, dtype=np.uint8)
-            print('States have shape:', state.shape)
-        else:
-            state = env_info.vector_observations[0]
-            print('States look like:', state)
-            self._observation_size = len(state)
-            print('States have length:', self._observation_size)
+        state = env_info.vector_observations[0]
+        high = np.array([np.inf] * state.shape[0])
+        print('States look like:', state)
+        self._observation_size = len(state)
+        self._observation_space = spaces.Box(-high, high, dtype=np.float32)
+        print('States have length:', self._observation_size)
+
 
     def step(self, action: int) -> GymSingleStepResult:
         """Run one timestep of the environment's dynamics. When end of
@@ -107,10 +101,6 @@ class UnityEnvWrapper(gym.Env):
     @property
     def observation_space(self):
         return self._observation_space
-
-    @property
-    def nA(self) -> int:
-        return self._nA
 
     @property
     def observation_size(self) -> int:
