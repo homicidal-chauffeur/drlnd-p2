@@ -1,7 +1,7 @@
 PARAMS = {
     "ddpg": {
         "base": {
-            "env_file": "/home/bohm/workspace/machine_learning/reinforcement_learning/udemy/Reacher_Linux/Reacher.x86_64",
+            "env_file": "../Reacher_Linux/Reacher.x86_64",
             "lr": 1e-4,
             "batch_size": 64,
             "replay_size": 1000000,
@@ -17,7 +17,7 @@ PARAMS = {
     },
     "d4pg": {
         "base": {
-            "env_file": "/home/bohm/workspace/machine_learning/reinforcement_learning/udemy/Reacher_Linux/Reacher.x86_64",
+            "env_file": "../Reacher_Linux/Reacher.x86_64",
             "lr": 1e-4,
             "batch_size": 64,
             # the paper used 1M
