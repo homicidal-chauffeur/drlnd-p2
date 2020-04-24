@@ -21,14 +21,15 @@ class UnityEnvWrapper(gym.Env):
         self,
         environment_filename: str,
             pixels: bool = False,
-            base_port = 5005
+            base_port = 5005,
+            train_mode = True
     ):
         """
         Environment initialization
         :param environment_filename: The UnityEnvironment path or file to be wrapped in the gym.
         """
-        self.base_port = base_port
         self._pixels = pixels
+        self._train_mode = train_mode
 
         self._env = UnityEnvironment(
             file_name=environment_filename,
@@ -41,7 +42,7 @@ class UnityEnvWrapper(gym.Env):
         self.brain = self._env.brains[self.brain_name]
 
         # reset the environment
-        env_info = self._env.reset(train_mode=True)[self.brain_name]
+        env_info = self._env.reset(train_mode=self._train_mode)[self.brain_name]
 
         # number of agents in the environment
         print('Number of agents:', len(env_info.agents))
@@ -85,7 +86,7 @@ class UnityEnvWrapper(gym.Env):
         """Resets the state of the environment and returns an initial observation.
         Returns: observation (list): the initial observation of the space.
         """
-        env_info = self._env.reset(train_mode=True)[self.brain_name]
+        env_info = self._env.reset(train_mode=self._train_mode)[self.brain_name]
         state = env_info.visual_observations[0] if self._pixels else env_info.vector_observations[0]
 
         return state
