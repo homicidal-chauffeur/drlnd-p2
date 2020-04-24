@@ -65,3 +65,27 @@ The environment is considered solved, when the average (over 100 episodes) of th
 version.
 
         conda env create -f environment.yml
+        
+### Running the Code
+
+#### Set PYTHONPATH
+To run any of the code from the command line, you will need to set the PYTHONPATH environment variable:
+
+        export PYTHONPATH=$PWD
+        
+#### Play the trained model
+
+        python dd/dd_play.py -m saves/d4pg-base/best_+34.837_1100000.dat 
+        
+The best three models are saved under `saves/<algorithm>-<hyperparams-name>/`
+
+#### Train the model
+For D4PG:
+
+        python dd/d4pg_train.py -n base
+        
+For DDPG:
+        
+        python dd/ddpg_train.py -n base
+
+`base` is the name of the hyper-parameters set from `dd/hyperparameters.py`

@@ -1,3 +1,5 @@
+# based on the book Deep Reinforcement Learning Hands On, Second Edition by Maxim Lapan
+
 import time
 import sys
 import numpy as np

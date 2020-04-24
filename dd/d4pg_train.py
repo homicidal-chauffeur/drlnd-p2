@@ -1,3 +1,5 @@
+# based on the book Deep Reinforcement Learning Hands On, Second Edition by Maxim Lapan
+
 import os
 import ptan
 import time
@@ -105,6 +107,7 @@ if __name__ == "__main__":
     os.makedirs(save_path, exist_ok=True)
 
     env = unity_env_wrapper.UnityEnvWrapper(params["env_file"])
+    # unable to spin multiple envs - crashes with
     # test_env = unity_env_wrapper.UnityEnvWrapper(params["env_file"], base_port=5006)
     test_env = env
 
